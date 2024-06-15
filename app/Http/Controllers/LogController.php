@@ -44,7 +44,7 @@ class LogController extends Controller
     public function show($id, Log $log)
     {  
          $log = Log::with('user')->join('statuses','statuses.id','=','logs.user_id')->where('id',$id)->first();
-        return view('logs.show', compact('log'));
+         return view('logs.show', compact('log'));
     }
 
     public function update(Request $request, Log $log)
@@ -61,26 +61,26 @@ class LogController extends Controller
             'filename' => $path,
         ]);
 
-        return redirect()->route('logs.index')->with('success', 'Log updated successfully.');
+        return redirect()->route('logs.index')->with('success', 'Log Berhasil diupdate.');
     }
 
-    public function destroy(Log $log)
+    public function destroy($id, Log $log)
     {
         $log->delete();
-        return redirect()->route('logs.index')->with('success', 'Log deleted successfully.');
+        return redirect()->route('logs.index')->with('success', 'Log Berhasil dihapus.');
     }
 
-    public function approve(Log $log)
+    public function approve($id, Log $log)
     {
         $approved = Status::where('status','Disetujui')->first();
         $log->update(['status_id' => $approved->id]);
-        return redirect()->back()->with('success', 'Log approved successfully.');
+        return redirect()->back()->with('success', 'Log diterima.');
     }
 
     public function reject(Log $log)
     {
         $rejected = Status::where('status','Ditolak')->first();
         $log->update(['status_id' => $rejected->id]);
-        return redirect()->back()->with('error', 'Log rejected.');
+        return redirect()->back()->with('error', 'Log Ditolak.');
     }
 }
